@@ -72,14 +72,7 @@ if [ "$AVAILABLE" -lt "$DISK_MIN" ]; then
   exit 1
 fi
 
-echo "1. Updating system packages..."
-apt update -y 2>/dev/null || true
-apt upgrade -y 2>/dev/null || true
-
-echo "2. Installing Git, Curl, and Wget..."
-apt install -y git curl wget 2>/dev/null || true
-
-echo "2.5. Configuring Git..."
+echo "Configuring Git..."
 if ! git config --global user.name > /dev/null 2>&1; then
   echo ""
   read -p "Enter your Git user name: " GIT_USER_NAME
@@ -91,6 +84,13 @@ if ! git config --global user.email > /dev/null 2>&1; then
   read -p "Enter your Git user email: " GIT_USER_EMAIL
   git config --global user.email "$GIT_USER_EMAIL"
 fi
+
+echo "1. Updating system packages..."
+apt update -y 2>/dev/null || true
+apt upgrade -y 2>/dev/null || true
+
+echo "2. Installing Git, Curl, and Wget..."
+apt install -y git curl wget 2>/dev/null || true
 
 echo "3. Installing Node.js 20 LTS..."
 if ! command -v node &> /dev/null; then
@@ -128,13 +128,9 @@ fi
 echo "5. Cloning repository..."
 # Handle dirty or existing repo by removing and re-cloning
 if [ -d "$APP_DIR" ]; then
-  echo "   Backing up configuration..."
-  mkdir -p /tmp/persian-calendar-backup
-  [ -f "$APP_DIR/src/users.json" ] && cp "$APP_DIR/src/users.json" /tmp/persian-calendar-backup/
-  [ -f "$APP_DIR/.env.local" ] && cp "$APP_DIR/.env.local" /tmp/persian-calendar-backup/
 
   echo "   Stopping existing services to release locks..."
-  systemctl stop vite-frontend wrangler-backend cloudflare-tunnel 2>/dev/null || true
+  systemctl stop vite-frontend cloudflare-tunnel 2>/dev/null || true
 
   echo "   Removing existing repository for clean clone..."
   rm -rf "$APP_DIR"
@@ -150,31 +146,6 @@ cd "$APP_DIR"
 
 echo "6. Installing project dependencies..."
 npm install 2>/dev/null || npm ci 2>/dev/null || true
-
-echo "6.5. Configuring environment and users..."
-
-if [ -d "/tmp/persian-calendar-backup" ]; then
-  echo "   Restoring previous configuration..."
-  [ -f "/tmp/persian-calendar-backup/.env.local" ] && cp /tmp/persian-calendar-backup/.env.local .env.local
-  [ -f "/tmp/persian-calendar-backup/users.json" ] && cp /tmp/persian-calendar-backup/users.json src/users.json
-  rm -rf /tmp/persian-calendar  -backup
-fi
-
-if [ ! -f ".env.local" ] && [ -f ".env.example" ]; then
-  cp .env.example .env.local
-  echo "   Copied .env.example to .env.local"
-fi
-
-if [ ! -z "$ADMIN_PASSWORD" ]; then
-  if [ -f "src/users.example.json" ]; then
-    ADMIN_HASH=$(node -e "console.log(crypto.createHash('sha256').update('$ADMIN_PASSWORD').digest('hex'))")
-    sed "s/8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918/$ADMIN_HASH/" src/users.example.json > src/users.json
-    echo "   Admin password explicitly configured in src/users.json"
-  fi
-elif [ ! -f "src/users.json" ] && [ -f "src/users.example.json" ]; then
-  cp src/users.example.json src/users.json
-  echo "   Using default admin configuration (admin / admin)"
-fi
 
 echo "7. Creating Systemd Service Files..."
 
@@ -239,16 +210,14 @@ EOF
 echo "8. Enabling and Starting All Services..."
 systemctl daemon-reload
 systemctl enable vite-frontend 2>/dev/null || true
-systemctl enable wrangler-backend 2>/dev/null || true
 systemctl enable cloudflare-tunnel 2>/dev/null || true
 systemctl restart vite-frontend 2>/dev/null || systemctl start vite-frontend 2>/dev/null || true
-systemctl restart wrangler-backend 2>/dev/null || systemctl start wrangler-backend 2>/dev/null || true
 systemctl restart cloudflare-tunnel 2>/dev/null || systemctl start cloudflare-tunnel 2>/dev/null || true
 
 echo ""
 echo "========================================"
 echo "Deployment complete!"
-echo "Check status: systemctl status vite-frontend wrangler-backend cloudflare-tunnel"
+echo "Check status: systemctl status vite-frontend cloudflare-tunnel"
 echo "View logs: journalctl -u cloudflare-tunnel -f"
 echo "========================================"
 

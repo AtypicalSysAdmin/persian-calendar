@@ -24,7 +24,6 @@
 #   - Overwrites and restarts all systemd services with the latest architecture
 #
 # SERVICE MANAGEMENT:
-#   systemctl status vite-frontend | wrangler-backend | cloudflare-tunnel
 #   journalctl -u <service-name> -f  # View logs
 #   systemctl restart <service-name>  # Restart a service
 #
@@ -157,27 +156,6 @@ Type=simple
 WorkingDirectory=${APP_DIR_FULL}
 ExecStartPre=${APP_DIR_FULL}/node_modules/.bin/vite build
 ExecStart=${APP_DIR_FULL}/node_modules/.bin/vite preview --port 5173 --host
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-# Wrangler Backend Service
-echo "   Creating wrangler-backend.service..."
-tee /etc/systemd/system/wrangler-backend.service > /dev/null <<EOF
-[Unit]
-Description=Wrangler Backend Worker
-After=network.target
-
-[Service]
-Type=simple
-WorkingDirectory=${APP_DIR_FULL}
-ExecStart=${APP_DIR_FULL}/node_modules/.bin/wrangler dev
-Environment=NODE_ENV=development
-Environment=CI=true
-Environment=WRANGLER_SEND_METRICS=false
 Restart=always
 RestartSec=5
 

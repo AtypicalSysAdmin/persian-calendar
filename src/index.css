@@ -1,0 +1,165 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Vazirmatn', sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  min-height: 100vh;
+  color: #fff;
+}
+
+.app {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.header .date-display {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.calendar-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .calendar-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.calendar-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calendar-card h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.nav-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.today-btn {
+  background: #4caf50;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.today-btn:hover {
+  background: #45a049;
+}
+
+.month-year {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  padding: 0.5rem;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.day:hover:not(.empty):not(.today) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.day.today {
+  background: #4caf50;
+  font-weight: 700;
+}
+
+.day.selected {
+  background: #2196f3;
+  font-weight: 700;
+}
+
+.day.empty {
+  cursor: default;
+}
+
+.day-number {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.gregorian-day .day-number small {
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+.today-mark {
+  font-size: 0.6rem;
+  margin-top: 2px;
+}

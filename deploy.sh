@@ -13,7 +13,6 @@
 #      - Git user name
 #      - Git user email
 #      - Tunnel domain (e.g., dev-app.yourdomain.com)
-#      - Admin password (press Enter to keep existing or use default)
 #      - /root/id_rsa (your SSH private key for GitHub)
 #
 # CAN BE RUN MULTIPLE TIMES SAFELY (Idempotent):
@@ -59,9 +58,6 @@ else
   fi
 fi
 
-echo ""
-read -s -p "Enter admin password (press Enter to keep existing or use default): " ADMIN_PASSWORD
-echo ""
 
 echo ""
 echo "0. Checking disk space..."

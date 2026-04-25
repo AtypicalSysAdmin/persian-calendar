@@ -102,6 +102,18 @@ function App() {
     setCurrentGregorian(now.clone().startOf('month'))
   }
 
+  const handleGregorianDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (value) {
+      const date = moment(value)
+      if (date.isValid()) {
+        setSelectedDate(date)
+        setCurrentJalali(date.clone().startOf('jMonth'))
+        setCurrentGregorian(date.clone().startOf('month'))
+      }
+    }
+  }
+
   const handleDayClick = (jalaliDay: number, gregorian: string) => {
     if (jalaliDay > 0 && gregorian) {
       const date = moment(gregorian)
@@ -144,6 +156,49 @@ function App() {
         {/* Persian Calendar */}
         <div className="calendar-card">
           <h2>Persian</h2>
+          <div className="persian-date-picker">
+            <select
+              className="date-select"
+              value={selectedDate.format('jYYYY')}
+              onChange={(e) => {
+                const newDate = currentJalali.clone().jYear(parseInt(e.target.value))
+                setSelectedDate(newDate)
+                setCurrentJalali(newDate.startOf('jMonth'))
+                setCurrentGregorian(newDate.clone().startOf('month'))
+              }}
+            >
+              {Array.from({ length: 100 }, (_, i) => 1400 + i).map(year => (
+                <option key={year} value={year}>{toPersianNumber(year)}</option>
+              ))}
+            </select>
+            <select
+              className="date-select"
+              value={parseInt(selectedDate.format('jMM'))}
+              onChange={(e) => {
+                const newDate = currentJalali.clone().jMonth(parseInt(e.target.value) - 1)
+                setSelectedDate(newDate)
+                setCurrentJalali(newDate.startOf('jMonth'))
+                setCurrentGregorian(newDate.clone().startOf('month'))
+              }}
+            >
+              {Object.entries(persianMonths).map(([key, value], index) => (
+                <option key={key} value={index + 1}>{value}</option>
+              ))}
+            </select>
+            <select
+              className="date-select"
+              value={parseInt(selectedDate.format('jDD'))}
+              onChange={(e) => {
+                const newDate = currentJalali.clone().jDate(parseInt(e.target.value))
+                setSelectedDate(newDate)
+                setCurrentGregorian(newDate.clone().startOf('month'))
+              }}
+            >
+              {Array.from({ length: 31 }, (_, i) => 1 + i).map(day => (
+                <option key={day} value={day}>{toPersianNumber(day)}</option>
+              ))}
+            </select>
+          </div>
           <div className="calendar-header">
             <button className="nav-btn" onClick={() => navigateMonth('prev')}>→</button>
             <span className="month-year">{getPersianMonthName(jalaliCal.monthName)} {toPersianNumber(jalaliCal.year)}</span>
@@ -175,6 +230,14 @@ function App() {
         {/* Gregorian Calendar */}
         <div className="calendar-card">
           <h2>Gregorian</h2>
+          <div className="date-picker-row">
+            <input
+              type="date"
+              className="date-input"
+              value={selectedDate.format('YYYY-MM-DD')}
+              onChange={handleGregorianDateChange}
+            />
+          </div>
           <div className="calendar-header">
             <button className="nav-btn" onClick={() => navigateMonth('prev')}>→</button>
             <span className="month-year">{gregorianCal.monthName} {gregorianCal.year}</span>

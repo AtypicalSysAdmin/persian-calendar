@@ -93,6 +93,49 @@ body {
   background: #45a049;
 }
 
+.date-picker-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.date-input {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.persian-date-picker {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.date-select {
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.date-select option {
+  background: #1a1a2e;
+  color: #fff;
+}
+
 .month-year {
   font-size: 1.1rem;
   font-weight: 500;

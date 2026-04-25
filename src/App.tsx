@@ -146,16 +146,17 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>Calendar</h1>
+        <h1>تقویم فارسی | Persian Calendar</h1>
+        <br/>
         <button className="nav-btn today-btn" onClick={goToToday}>
-          Today: {toPersianNumber(today.format('jYYYY/jMM/jDD'))} - {today.format('YYYY/MM/DD')}
+         امروز : {toPersianNumber(today.format('jYYYY/jMM/jDD'))}&nbsp;&nbsp;|&nbsp;&nbsp;{today.format('YYYY/MM/DD')} : Today
         </button>
       </header>
 
       <div className="calendar-container">
         {/* Persian Calendar */}
         <div className="calendar-card">
-          <h2>Persian</h2>
+          <h2>تقویم فارسی</h2>
           <div className="persian-date-picker">
             <select
               className="date-select"
@@ -219,7 +220,7 @@ function App() {
                 {d.jalali > 0 && (
                   <span className="day-number">
                     {toPersianNumber(d.jalali)}
-                    <small>{d.gregorianShort}</small>
+                    {/* <small>{d.gregorianShort}</small> */}
                   </span>
                 )}
               </div>
@@ -229,7 +230,7 @@ function App() {
 
         {/* Gregorian Calendar */}
         <div className="calendar-card">
-          <h2>Gregorian</h2>
+          <h2>Gregorian Calendar</h2>
           <div className="date-picker-row">
             <input
               type="date"
@@ -258,7 +259,7 @@ function App() {
                 {d.day > 0 && (
                   <span className="day-number">
                     {d.day}
-                    <small>{toPersianNumber(d.jalaliShort)}</small>
+                    {/* <small>{toPersianNumber(d.jalaliShort)}</small> */}
                   </span>
                 )}
               </div>

@@ -146,11 +146,8 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>تقویم فارسی | Persian Calendar</h1>
+        <h1>تقویم  | Calendar</h1>
         <br/>
-        <button className="nav-btn today-btn" onClick={goToToday}>
-         امروز : {toPersianNumber(today.format('jYYYY/jMM/jDD'))}&nbsp;&nbsp;|&nbsp;&nbsp;{today.format('YYYY/MM/DD')} : Today
-        </button>
       </header>
 
       <div className="calendar-container">
@@ -199,6 +196,9 @@ function App() {
                 <option key={day} value={day}>{toPersianNumber(day)}</option>
               ))}
             </select>
+            <button className="nav-btn today-btn" onClick={goToToday} style={{ marginRight: '10px' }}>
+              امروز
+            </button>
           </div>
           <div className="calendar-header">
             <button className="nav-btn" onClick={() => navigateMonth('prev')}>→</button>
@@ -238,6 +238,9 @@ function App() {
               value={selectedDate.format('YYYY-MM-DD')}
               onChange={handleGregorianDateChange}
             />
+            <button className="nav-btn today-btn" onClick={goToToday} style={{ marginRight: '10px' }}>
+              Today
+            </button>
           </div>
           <div className="calendar-header">
             <button className="nav-btn" onClick={() => navigateMonth('prev')}>→</button>
